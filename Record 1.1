@@ -1,0 +1,174 @@
+mysql> use INVOICE;
+Database changed
+mysql> CREATE TABLE Customer(ID INT PRIMARY KEY,NAME VARCHAR(50),ADDRESS VARCHAR(255),CITY VARCHAR(50),PH_NO VARCHAR(20)UNIQUE);
+Query OK, 0 rows affected (1.65 sec) 
+
+mysql> DESC Customer;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| ID      | int          | NO   | PRI | NULL    |       |
+| NAME    | varchar(50)  | YES  |     | NULL    |       |
+| ADDRESS | varchar(255) | YES  |     | NULL    |       |
+| CITY    | varchar(50)  | YES  |     | NULL    |       |
+| PH_NO   | varchar(20)  | YES  | UNI | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+
+mysql> CREATE TABLE Product(PID INT PRIMARY KEY,PNAME VARCHAR(50),PRICE DECIMAL(10,2)DEFAULT 0);
+Query OK, 0 rows affected (0.73 sec)
+
+mysql> DESC Product;
++-------+---------------+------+-----+---------+-------+
+| Field | Type          | Null | Key | Default | Extra |
++-------+---------------+------+-----+---------+-------+
+| PID   | int           | NO   | PRI | NULL    |       |
+| PNAME | varchar(50)   | YES  |     | NULL    |       |
+| PRICE | decimal(10,2) | YES  |     | 0.00    |       |
++-------+---------------+------+-----+---------+-------+
+
+mysql> CREATE TABLE Invoice_master(INID INT PRIMARY KEY,C_ID INT,IN_DATE DATE NOT NULL,FOREIGN KEY(C_ID)REFERENCES Customer(ID));
+Query OK, 0 rows affected (0.73 sec)
+
+mysql> DESC Invoice_master;
++---------+------+------+-----+---------+-------+
+| Field   | Type | Null | Key | Default | Extra |
++---------+------+------+-----+---------+-------+
+| INID    | int  | NO   | PRI | NULL    |       |
+| C_ID    | int  | YES  | MUL | NULL    |       |
+| IN_DATE | date | NO   |     | NULL    |       |
++---------+------+------+-----+---------+-------+
+
+mysql> CREATE TABLE Invoice_item(IN_ID INT,PID INT,QUANTITY INT NOT NULL CHECK(QUANTITY > 0),FOREIGN KEY(IN_ID) REFERENCES Invoice_master(INID),FOREIG
+N KEY(PID) REFERENCES Product(PID));
+Query OK, 0 rows affected (0.80 sec)
+
+mysql> DESC Invoice_item;;
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| IN_ID    | int  | YES  | MUL | NULL    |       |
+| PID      | int  | YES  | MUL | NULL    |       |
+| QUANTITY | int  | NO   |     | NULL    |       |
++----------+------+------+-----+---------+-------+
+
+mysql> desc Employee;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMP_ID   | int          | NO   | PRI | NULL    |       |
+| EMP_NAME | varchar(100) | YES  |     | NULL    |       |
+| CITY     | varchar(50)  | YES  |     | NULL    |       |
+| EMP_DOB  | date         | YES  |     | NULL    |       |
+| EMP_ADNO | varchar(20)  | YES  | UNI | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+
+mysql> ALTER TABLE Employee ADD SSN VARCHAR(20) FIRST;
+Query OK, 0 rows affected (2.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from Employee1;
+Empty set (0.00 sec)
+
+mysql> desc Employee;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| SSN      | varchar(20)  | YES  |     | NULL    |       |
+| EMP_ID   | int          | NO   | PRI | NULL    |       |
+| EMP_NAME | varchar(100) | YES  |     | NULL    |       |
+| CITY     | varchar(50)  | YES  |     | NULL    |       |
+| EMP_DOB  | date         | YES  |     | NULL    |       |
+| EMP_ADNO | varchar(20)  | YES  | UNI | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+
+mysql> ALTER TABLE Employee MODIFY EMP_DOB YEAR;
+Query OK, 0 rows affected (1.93 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Employee;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| SSN      | varchar(20)  | YES  |     | NULL    |       |
+| EMP_ID   | int          | NO   | PRI | NULL    |       |
+| EMP_NAME | varchar(100) | YES  |     | NULL    |       |
+| CITY     | varchar(50)  | YES  |     | NULL    |       |
+| EMP_DOB  | year         | YES  |     | NULL    |       |
+| EMP_ADNO | varchar(20)  | YES  | UNI | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+
+mysql> ALTER TABLE Employee DROP  column EMP_ID;
+Query OK, 0 rows affected (2.31 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Employee;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| SSN      | varchar(20)  | YES  |     | NULL    |       |
+| EMP_NAME | varchar(100) | YES  |     | NULL    |       |
+| CITY     | varchar(50)  | YES  |     | NULL    |       |
+| EMP_DOB  | year         | YES  |     | NULL    |       |
+| EMP_ADNO | varchar(20)  | YES  | UNI | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+
+mysql> ALTER TABLE Employee add constraint unique_ssn_ad UNIQUE(SSN,EMP_ADNO);
+Query OK, 0 rows affected (0.58 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Employee;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| SSN      | varchar(20)  | YES  | MUL | NULL    |       |
+| EMP_NAME | varchar(100) | YES  |     | NULL    |       |
+| CITY     | varchar(50)  | YES  |     | NULL    |       |
+| EMP_DOB  | year         | YES  |     | NULL    |       |
+| EMP_ADNO | varchar(20)  | YES  | UNI | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+
+
+mysql> desc Student;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| RL_NO     | int          | NO   | PRI | NULL    |       |
+| S_NAME    | varchar(100) | NO   |     | NULL    |       |
+| S_AGE     | int          | NO   |     | NULL    |       |
+| S_ADDRESS | varchar(255) | YES  |     | NULL    |       |
+| S_GENDER  | char(1)      | YES  |     | M       |       |
++-----------+--------------+------+-----+---------+-------+
+
+
+mysql> alter table Student modify S_AGE int null;
+Query OK, 0 rows affected (1.27 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Student;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| RL_NO     | int          | NO   | PRI | NULL    |       |
+| S_NAME    | varchar(100) | NO   |     | NULL    |       |
+| S_AGE     | int          | YES  |     | NULL    |       |
+| S_ADDRESS | varchar(255) | YES  |     | NULL    |       |
+| S_GENDER  | char(1)      | YES  |     | M       |       |
++-----------+--------------+------+-----+---------+-------+
+
+
+mysql> alter table Employee rename to Person;
+Query OK, 0 rows affected (0.45 sec)
+
+mysql> desc Person;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| SSN      | varchar(20)  | YES  | MUL | NULL    |       |
+| EMP_NAME | varchar(100) | YES  |     | NULL    |       |
+| CITY     | varchar(50)  | YES  |     | NULL    |       |
+| EMP_DOB  | year         | YES  |     | NULL    |       |
+| EMP_ADNO | varchar(20)  | YES  | UNI | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+
+mysql> drop table Student;
+Query OK, 0 rows affected (0.41 sec)
