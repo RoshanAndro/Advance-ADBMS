@@ -195,3 +195,4 @@ mysql> show grants for 'user2'@'localhost';
 | GRANT USAGE ON *.* TO `user2`@`localhost`                  |
 | GRANT UPDATE ON `INVOICE`.* TO `user2`@`localhost`         |
 +------------------------------------------------------------+
+//VERIFIED
