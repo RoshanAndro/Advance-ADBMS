@@ -1,0 +1,201 @@
+                  a) ACCESSING DATABASE:  (SELECT, Filtering using WHERE, ORDER BY Clauses)
+
+1.    List all invoice items, avoid duplicates.
+
+mysql> select distinct IN_ID,PID,QUANTITY from Invoice_item;
++-------+------+----------+
+| IN_ID | PID  | QUANTITY |
++-------+------+----------+
+|   101 |    1 |        3 |
+|   102 |    2 |        5 |
+|   103 |    3 |        5 |
+|   104 |    4 |        2 |
+|   105 |    5 |        7 |
++-------+------+----------+
+5 rows in set (0.00 sec)
+
+
+2.    List the invoice details from 1st January 2024 to 31st march 2024
+
+mysql> select * from Invoice_master where IN_DATE between '2024-01-01' and '2024-03-31';
++------+------+------------+
+| INID | C_ID | IN_DATE    |
++------+------+------------+
+|  104 | 1004 | 2024-02-12 |
++------+------+------------+
+1 row in set (0.00 sec)
+
+
+3.    List the customer details who not live in ‘tvm’.
+
+mysql> select * from Customer where CITY not like 'Trivandrum';
++------+-------+------------+------------+------------+
+| ID   | NAME  | ADDRESS    | CITY       | PH_NO      |
++------+-------+------------+------------+------------+
+| 1001 | Rohan | Kerala     | Calicut    | NULL       |
+| 1002 | Sona  | Tamil Nadu | MADURI     | 9562816531 |
+| 1004 | Abkar | Kerala     | Malappuram | 7012556427 |
+| 1005 | Wasi  | Kerala     | Calicut    | 7012235327 |
++------+-------+------------+------------+------------+
+4 rows in set (0.00 sec)
+
+
+4.    List the customers who have no phone number.
+
+mysql> select * from Customer where PH_NO is null;
++------+-------+---------+------------+-------+
+| ID   | NAME  | ADDRESS | CITY       | PH_NO |
++------+-------+---------+------------+-------+
+| 1001 | Rohan | Kerala  | Calicut    | NULL  |
+| 1003 | Ali   | Kerala  | Trivandrum | NULL  |
++------+-------+---------+------------+-------+
+2 rows in set (0.00 sec)
+
+
+5.    Display customer names in descending order.
+
+mysql> select NAME from Customer order by NAME desc;
++-------+
+| NAME  |
++-------+
+| Wasi  |
+| Sona  |
+| Rohan |
+| Ali   |
+| Abkar |
++-------+
+5 rows in set (0.00 sec)
+
+6.    Display the customer details sorted in ascending by city and descending by names.
+
+mysql> select * from Customer order by CITY asc,NAME desc;
++------+-------+------------+------------+------------+
+| ID   | NAME  | ADDRESS    | CITY       | PH_NO      |
++------+-------+------------+------------+------------+
+| 1005 | Wasi  | Kerala     | Calicut    | 7012235327 |
+| 1001 | Rohan | Kerala     | Calicut    | NULL       |
+| 1002 | Sona  | Tamil Nadu | MADURI     | 9562816531 |
+| 1004 | Abkar | Kerala     | Malappuram | 7012556427 |
+| 1003 | Ali   | Kerala     | Trivandrum | NULL       |
++------+-------+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+
+7.    Find the customer names who have ‘e’ or ‘a’ in them and at least 3 characters in length
+
+mysql> select NAME from Customer where(NAME like '%e' or NAME like '%a') and length(NAME) >=3;
++------+
+| NAME |
++------+
+| Sona |
++------+
+1 row in set (0.00 sec)
+
+
+
+8.    List the names of customers their names have ‘r’ in second position.
+
+mysql> select NAME from Customer where NAME like'____r%';
++-------+
+| NAME  |
++-------+
+| Abkar |
++-------+
+1 row in set (0.00 sec)
+
+
+
+                  b) OPTIMIZING DATABASE:  (GROUP BY, AGGREGATE FUNCTIONS)
+
+
+1.    List product name, price except soap on price order.
+
+mysql> select * from Product;
++-----+--------+--------+
+| PID | PNAME  | PRICE  |
++-----+--------+--------+
+|   1 | Pen    |  82.41 |
+|   2 | Pencil |  97.91 |
+|   3 | Soap   | 123.78 |
+|   4 | Books  | 299.99 |
+|   5 | Slate  |  59.19 |
++-----+--------+--------+
+
+mysql> select PNAME,PRICE from Product where PNAME != 'Soap' order by PRICE;
++--------+--------+
+| PNAME  | PRICE  |
++--------+--------+
+| Slate  |  59.19 |
+| Pen    |  82.41 |
+| Pencil |  97.91 |
+| Books  | 299.99 |
++--------+--------+
+
+2.    Find minimum, maximum and average price of products.
+
+
+mysql> select min(PRICE) as Min_Price,max(PRICE) as Max_Price,avg(PRICE) as Avg_Price from Product;
++-----------+-----------+------------+
+| Min_Price | Max_Price | Avg_Price  |
++-----------+-----------+------------+
+|     59.19 |    299.99 | 132.656000 |
++-----------+-----------+------------+
+1 row in set (0.00 sec)
+
+
+3.    Find number of customers in each city.
+
+
+mysql> select * from Customer;
++------+-------+------------+------------+------------+
+| ID   | NAME  | ADDRESS    | CITY       | PH_NO      |
++------+-------+------------+------------+------------+
+| 1001 | Rohan | Kerala     | Calicut    | NULL       |
+| 1002 | Sona  | Tamil Nadu | MADURI     | 9562816531 |
+| 1003 | Ali   | Kerala     | Trivandrum | NULL       |
+| 1004 | Abkar | Kerala     | Calicut    | 7012556427 |
+| 1005 | Wasi  | Kerala     | Calicut    | 7012235327 |
++------+-------+------------+------------+------------+
+5 rows in set (0.01 sec)
+
+
+mysql> select CITY,count(*) as No_of_Customers from Customer group by CITY;
++------------+-----------------+
+| CITY       | No_of_Customers |
++------------+-----------------+
+| Calicut    |               2 |
+| MADURI     |               1 |
+| Trivandrum |               1 |
+| Calicut    |               1 |
++------------+-----------------+
+4 rows in set (0.00 sec)
+
+
+
+4.    Find number of customers in each city, only include city with more than 3 customers.
+
+
+
+mysql> select CITY,count(*) from Customer group by CITY having Customer >= 3;
++------------+----------+
+| CITY       | Customer |
++------------+----------+
+| Calicut    |        3 |
++------------+----------+
+4 rows in set (0.00 sec)
+
+
+5. Show data as displayed ‘who, where’ Eg: ‘customer1 lives in eranakulam’
+
+
+mysql> select concat(NAME,'    lives in   ',CITY) from Customer;
++-------------------------------------+
+| concat(NAME,'    lives in   ',CITY) |
++-------------------------------------+
+| Rohan    lives in   Calicut         |
+| Sona     lives in   MADURI          |
+| Ali      lives in   Trivandrum      |
+| Abkar    lives in   Calicut         |
+| Wasi     lives in   Calicut         |
++-------------------------------------+
+5 rows in set (0.00 sec)
