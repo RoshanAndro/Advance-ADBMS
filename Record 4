@@ -199,3 +199,4 @@ mysql> select concat(NAME,'    lives in   ',CITY) from Customer;
 | Wasi     lives in   Calicut         |
 +-------------------------------------+
 5 rows in set (0.00 sec)
+//VERIFIED
