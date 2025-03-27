@@ -108,4 +108,4 @@ mysql> select PNAME from Product P where exists(select PID from Invoice_item II 
 | Pencil |
 | Soap   |
 +--------+
-
+//VERIFIED
