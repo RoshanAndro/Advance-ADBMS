@@ -32,7 +32,7 @@ mysql> select * from Product $
 5 rows in set (0.00 sec)
 
 
-mysql> select pname,price_range(price) from Product $
+mysql> select PNAME,price_range(price) from Product $
 +--------+-------------+
 | PNAME  | Price_Range |
 +--------+-------------+
