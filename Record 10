@@ -1,0 +1,70 @@
+1.      Create a trigger to handle updates to the customer table.
+
+
+mysql> create table Customer1 like Customer//
+Query OK, 0 rows affected (1.75 sec)
+
+mysql> select * from Customer;
++------+-------+------------+------------+------------+
+| ID   | NAME  | ADDRESS    | CITY       | PH_NO      |
++------+-------+------------+------------+------------+
+| 1001 | Rohan | Kerala     | Eranakulam | NULL       |
+| 1002 | Sona  | Tamil Nadu | MADURI     | 9562816531 |
+| 1003 | Ali   | Kerala     | Trivandrum | NULL       |
+| 1004 | Abkar | Kerala     | Eranakulam | 7012556427 |
+| 1005 | Wasi  | Kerala     | Eranakulam | 7012235327 |
++------+-------+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> create trigger Cust
+    -> after update on Customer
+    -> for each row 
+    -> begin
+    -> insert into Customer1 set ID=old.ID,NAME=old.NAME,ADDRESS=old.ADDRESS,CITY=old.CITY,PH_NO=old.PH_NO;
+    -> end//
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> update Customer set ADDRESS = 'GOA' where ID=1005//
+Query OK, 1 row affected (0.11 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+mysql> select * from Customer1//
++------+------+---------+------------+------------+
+| ID   | NAME | ADDRESS | CITY       | PH_NO      |
++------+------+---------+------------+------------+
+| 1005 | Wasi | Kerala  | Eranakulam | 7012235327 |
++------+------+---------+------------+------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+2.      Create a trigger to handle inserts to the product relation ( if price < 5 the set price to 10).
+
+mysql> create trigger pcheck
+    -> before insert on Product
+    -> for each row
+    -> begin
+    ->   if new.price<5 then
+    -> set new.price=10;
+    -> end if;
+    -> end//
+Query OK, 0 rows affected (0.19 sec)
+ 
+mysql> insert into Product values(12,'Pin',4)//
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from Product//
++-----+--------+--------+
+| PID | PNAME  | PRICE  |
++-----+--------+--------+
+|   1 | Pen    |  82.41 |
+|   2 | Pencil |  97.91 |
+|   3 | Soap   | 123.78 |
+|   4 | Books  | 299.99 |
+|   5 | Slate  |  59.19 |
+|  12 | Pin    |  10.00 |
++-----+--------+--------+
+6 rows in set (0.00 sec)
+
+
