@@ -43,3 +43,4 @@ mysql> select PNAME,price_range(price) from Product $
 | Slate  | High        |
 +--------+-------------+
 5 rows in set (0.00 sec)
+//VERIFIED
