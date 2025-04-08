@@ -57,26 +57,34 @@ Query OK, 0 rows affected (0.00 sec)
 
 3.      Create a procedure to display invoice details of a particular customer.
 
+mysql> CREATE PROCEDURE InvoiceDetails(IN customer_id INT)
+    -> BEGIN
+    ->     SELECT
+    ->         IM.INID AS Invoice_ID,
+    ->         IM.IN_DATE AS Invoice_Date,
+    ->         P.PNAME AS Product_Name,
+    ->         II.QUANTITY AS Quantity,
+    ->         P.PRICE AS Price,
+    ->         (II.QUANTITY * P.PRICE) AS Total_Amount
+    ->     FROM
+    ->         Invoice_master IM
+    ->     JOIN 
+    ->         Invoice_item II ON IM.INID = II.IN_ID
+    ->     JOIN
+    ->         Product P ON II.PID = P.PID
+    ->     WHERE
+    ->         IM.C_ID = customer_id;
+    -> END//
+Query OK, 0 rows affected (0.25 sec)
 
-mysql> delimiter //
-mysql> create procedure InvoiceDetails(customer_id int)
-    -> begin
-    -> select IM.INID,IM.IN_DATE,II.PID,II.QUANTITY
-    -> from Invoice_master IM
-    -> join Invoice_item II on IM.INID = II.IN_ID
-    -> where IM.C_ID = customer_id;
-    -> end//
-Query OK, 0 rows affected (0.14 sec)
+mysql> DELIMITER ;
+mysql> call InvoiceDetails(1001);
++------------+--------------+--------------+----------+-------+--------------+
+| Invoice_ID | Invoice_Date | Product_Name | Quantity | Price | Total_Amount |
++------------+--------------+--------------+----------+-------+--------------+
+|        101 | 2023-03-21   | Pen          |        3 | 82.41 |       247.23 |
++------------+--------------+--------------+----------+-------+--------------+
+1 row in set (0.00 sec)
 
-mysql> call InvoiceDetails(1001)//
-+------+------------+------+----------+
-| INID | IN_DATE    | PID  | QUANTITY |
-+------+------------+------+----------+
-|  101 | 2023-03-21 |    1 |        3 |
-+------+------------+------+----------+
-1 row in set (0.04 sec)
+Query OK, 0 rows affected (0.00 sec)
 
-Query OK, 0 rows affected (0.04 sec)
-
-//RESUBMIT
-last one need customer name
