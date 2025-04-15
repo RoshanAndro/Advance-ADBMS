@@ -1,0 +1,58 @@
+                                                                   RECORD PROGRAM 13: NoSQL- RETRIEVING DATA
+
+1.      Write a MongoDB query to display the customer documents having city ‘ekm’,’tvm’.
+
+INVOICE> db.CUSTOMER.find({ "address.city": { $in: ["Kochi", "Trivandrum"] } })
+[
+  {
+    _id: ObjectId('67fe282177450369d9d861e0'),
+    customer_id: 'CUST001',
+    name: 'Arjun',
+    address: { street: '1 Main St', city: 'Trivandrum', zip: '682001' },
+    phone: '9645628170'
+  }
+]
+
+
+2.     Write a MongoDB query to display all product documents their price >50.
+
+INVOICE> db.PRODUCT.find({ price: { $gt: 50 } })
+[
+ INVOICE> db.PRODUCT.insertOne({
+         product_id: "PROD1",
+         name: "Asus Laptop",
+         price: 50000,
+         stock: 10
+ })
+
+INVOICE> db.PRODUCT.insertOne({
+      product_id: "PROD2",
+      name: "Speaker",
+      price: 500,
+      stock: 25
+  })
+]
+
+  
+3.    Write a MongoDB query to find customer documents who not live in ‘tvm’.
+
+INVOICE> db.CUSTOMER.insertOne({
+...   customer_id: "CUST03",
+...   name: "Kiran",
+...   address: { street: "3 Beach Road", city: "Kollam", zip: "691001" },
+...   phone: "9562780369"
+... })
+{
+  acknowledged: true,
+  insertedId: ObjectId('67fe2ad677450369d9d861e4')
+}
+INVOICE> db.CUSTOMER.find({ "address.city": { $ne: "Trivandrum" } })
+[
+  {
+    _id: ObjectId('67fe2ad677450369d9d861e4'),
+    customer_id: 'CUST03',
+    name: 'Kiran',
+    address: { street: '3 Beach Road', city: 'Kollam', zip: '691001' },
+    phone: '9562780369'
+  }
+]
