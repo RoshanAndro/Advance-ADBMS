@@ -34,7 +34,7 @@ INVOICE> db.PRODUCT.insertOne({
 ]
 
   
-3.    Write a MongoDB query to find customer documents who not live in ‘tvm’.
+3.    Write a MongoDB query to find customer documents who not live in ‘Trivandrum’.
 
 INVOICE> db.CUSTOMER.insertOne({
 ...   customer_id: "CUST03",
@@ -56,3 +56,4 @@ INVOICE> db.CUSTOMER.find({ "address.city": { $ne: "Trivandrum" } })
     phone: '9562780369'
   }
 ]
+//VERIFIED
