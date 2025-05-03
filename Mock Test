@@ -344,17 +344,20 @@ collegeDB> db.students.aggregate([
 
 2. Use $match and $group to calculate the average math marks department-wise.
 
-collegeDB> db.student.aggregate([
-... {
-...   $match: {}
-... },
-...  {
+collegeDB> db.students.aggregate([
+...   {
 ...     $group: {
 ...       _id: "$department",
-...       avgMathMarks: { $avg: "$marks.math" }
+...       average_math_score: { $avg: "$marks.math" }
 ...     }
 ...   }
-... ]).toArray();
+... ])
+[
+  { _id: 'Computer Science', average_math_score: 92 },
+  { _id: 'Civil Engineering', average_math_score: 80 },
+  { _id: 'Mechanical Engineering', average_math_score: 75 },
+  { _id: 'Physics', average_math_score: 95 }
+]
 
 
 3. Use $sort to display students based on their science marks in descending order.
