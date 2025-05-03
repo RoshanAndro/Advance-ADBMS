@@ -1,0 +1,526 @@
+                                                         .. PART A: Creating Collection and Inserting Documents ..
+Create a database named collegeDB.
+Create a collection named students.
+Insert at least 5 student documents with the following fields:
+
+
+
+test> use collegeDB
+switched to db collegeDB
+collegeDB> db.students.insertMany([
+... {
+...  name:"Alice Smith",
+... age: 20,
+...  department: "Computer Science",
+...  marks: {
+...      maths: 85,
+...      science: 78,
+...      english: 92
+...  },
+...  admissionYear: 2022
+... },
+...  {
+...     name: "Bob Johnson",
+...     age: 22,
+...     department: "Electrical Engineering",
+...     marks: {
+...       math: 90,
+...       science: 88,
+...       english: 80
+...     },
+...     admissionYear: 2021
+...   },
+...   {
+...     name: "Charlie Brown",
+...     age: 19,
+...     department: "Mechanical Engineering",
+...     marks: {
+...       math: 75,
+...       science: 82,
+...       english: 85
+...     },
+...     admissionYear: 2023
+...   },
+...   {
+...     name: "Diana Miller",
+...     age: 21,
+...     department: "Computer Science",
+...     marks: {
+...       math: 92,
+...       science: 90,
+...       english: 88
+...     },
+...     admissionYear: 2022
+...   },
+...   {
+...     name: "Ethan Davis",
+...     age: 23,
+...     department: "Civil Engineering",
+...     marks: {
+...       math: 80,
+...       science: 75,
+...       english: 70
+...     },
+...     admissionYear: 2020
+...   },
+...    {
+...     name: "Fatima Khan",
+...     age: 20,
+...     department: "Physics",
+...     marks: {
+...       math: 95,
+...       science: 93,
+...       english: 89
+...     },
+...     admissionYear: 2022
+...   }
+... ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6815b687166c7f6d44d861e0'),
+    '1': ObjectId('6815b687166c7f6d44d861e1'),
+    '2': ObjectId('6815b687166c7f6d44d861e2'),
+    '3': ObjectId('6815b687166c7f6d44d861e3'),
+    '4': ObjectId('6815b687166c7f6d44d861e4'),
+    '5': ObjectId('6815b687166c7f6d44d861e5')
+  }
+}
+
+
+
+
+
+                                                                        ..  PART B: CRUD Operations  ..
+
+
+1. Display all documents in the students collection.
+
+collegeDB> db.students.find();
+... 
+[
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e0'),
+    name: 'Alice Smith',
+    age: 20,
+    department: 'Computer Science',
+    marks: { maths: 85, science: 78, english: 92 },
+    admissionYear: 2022
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e1'),
+    name: 'Bob Johnson',
+    age: 22,
+    department: 'Electrical Engineering',
+    marks: { math: 90, science: 88, english: 80 },
+    admissionYear: 2021
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e2'),
+    name: 'Charlie Brown',
+    age: 19,
+    department: 'Mechanical Engineering',
+    marks: { math: 75, science: 82, english: 85 },
+    admissionYear: 2023
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e3'),
+    name: 'Diana Miller',
+    age: 21,
+    department: 'Computer Science',
+    marks: { math: 92, science: 90, english: 88 },
+    admissionYear: 2022
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e4'),
+    name: 'Ethan Davis',
+    age: 23,
+    department: 'Civil Engineering',
+    marks: { math: 80, science: 75, english: 70 },
+    admissionYear: 2020
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e5'),
+    name: 'Fatima Khan',
+    age: 20,
+    department: 'Physics',
+    marks: { math: 95, science: 93, english: 89 },
+    admissionYear: 2022
+  }
+]
+
+2. Display students whose department is "Computer Science".
+
+
+collegeDB> db.students.find({ department: "Computer Science" });
+... 
+[
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e0'),
+    name: 'Alice Smith',
+    age: 20,
+    department: 'Computer Science',
+    marks: { maths: 85, science: 78, english: 92 },
+    admissionYear: 2022
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e3'),
+    name: 'Diana Miller',
+    age: 21,
+    department: 'Computer Science',
+    marks: { math: 92, science: 90, english: 88 },
+    admissionYear: 2022
+  }
+]
+
+
+3. Update the age of a student named "Alice" to 21.
+
+
+collegeDB> db.students.updateOne(
+... { name: "Alice Smith" },
+... { $set: { age: 21 }  }
+... );
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+
+4. Add a new field attendance: 95 to the student named "Alice".
+
+collegeDB> db.students.updateOne(
+... { name: "Alice Smith" },
+... { $set: { age: 21 }  }
+... );
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+collegeDB> db.students.updateOne(
+... { name: "Alice Smith" },
+... { $set: { attendence: 95 } }
+... );
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+
+
+5. Delete a student document where the name is "Bob".
+
+collegeDB> db.students.deleteOne({name: "Bob Johnson"});
+{ acknowledged: true, deletedCount: 1 }
+
+
+                                                                .. Part C: Data Retrieval with Conditions ..
+
+
+1. Retrieve names of students who scored more than 85 in math.
+
+collegeDB> db.students.find(
+... {
+... "marks.math":{
+... $gt:85 } },
+... { name: 1, _id: 0 }
+... ).toArray();
+[ { name: 'Diana Miller' }, { name: 'Fatima Khan' } ]
+
+
+2. List students admitted in the year 2023.
+
+collegeDB> db.students.find({ admissionYear: 2023 }).toArray();
+[
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e2'),
+    name: 'Charlie Brown',
+    age: 19,
+    department: 'Mechanical Engineering',
+    marks: { math: 75, science: 82, english: 85 },
+    admissionYear: 2023
+  }
+]
+
+3. Display students sorted by name in ascending order.
+
+
+collegeDB> db.students.find().sort({ name: 1 }).toArray();
+[
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e0'),
+    name: 'Alice Smith',
+    age: 21,
+    department: 'Computer Science',
+    marks: { maths: 85, science: 78, english: 92 },
+    admissionYear: 2022,
+    attendence: 95
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e2'),
+    name: 'Charlie Brown',
+    age: 19,
+    department: 'Mechanical Engineering',
+    marks: { math: 75, science: 82, english: 85 },
+    admissionYear: 2023
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e3'),
+    name: 'Diana Miller',
+    age: 21,
+    department: 'Computer Science',
+    marks: { math: 92, science: 90, english: 88 },
+    admissionYear: 2022
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e4'),
+    name: 'Ethan Davis',
+    age: 23,
+    department: 'Civil Engineering',
+    marks: { math: 80, science: 75, english: 70 },
+    admissionYear: 2020
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e5'),
+    name: 'Fatima Khan',
+    age: 20,
+    department: 'Physics',
+    marks: { math: 95, science: 93, english: 89 },
+    admissionYear: 2022
+  }
+]
+
+4. Count the number of students in each department.
+
+collegeDB> db.students.aggregate([
+...   {
+...     $group: {
+...       _id: "$department",          
+...       count: { $sum: 1 }         
+...     }
+...   }
+... ]).toArray();
+... 
+[
+  { _id: 'Mechanical Engineering', count: 1 },
+  { _id: 'Civil Engineering', count: 1 },
+  { _id: 'Computer Science', count: 2 },
+  { _id: 'Physics', count: 1 }
+]
+
+
+                                                                      ..  Part D: Aggregation ..
+
+
+1. Use $project to display only name and total marks (sum of all subjects).
+
+
+collegeDB> db.students.aggregate([
+...   {
+...     $project: {
+...       _id: 0, 
+...       name: 1,
+...       totalMarks: { $sum: [ "$marks.math", "$marks.science", "$marks.english" ] }
+...     }
+...   }
+... ]).toArray();
+[
+  { name: 'Alice Smith', totalMarks: 170 },
+  { name: 'Charlie Brown', totalMarks: 242 },
+  { name: 'Diana Miller', totalMarks: 270 },
+  { name: 'Ethan Davis', totalMarks: 225 },
+  { name: 'Fatima Khan', totalMarks: 277 }
+]
+
+2. Use $match and $group to calculate the average math marks department-wise.
+
+collegeDB> db.student.aggregate([
+... {
+...   $match: {}
+... },
+...  {
+...     $group: {
+...       _id: "$department",
+...       avgMathMarks: { $avg: "$marks.math" }
+...     }
+...   }
+... ]).toArray();
+
+
+3. Use $sort to display students based on their science marks in descending order.
+
+
+collegeDB> db.students.aggregate([
+...   {
+...     $sort: { "marks.science": -1 } 
+...   }
+... ]).toArray();
+[
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e5'),
+    name: 'Fatima Khan',
+    age: 20,
+    department: 'Physics',
+    marks: { math: 95, science: 93, english: 89 },
+    admissionYear: 2022
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e3'),
+    name: 'Diana Miller',
+    age: 21,
+    department: 'Computer Science',
+    marks: { math: 92, science: 90, english: 88 },
+    admissionYear: 2022
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e2'),
+    name: 'Charlie Brown',
+    age: 19,
+    department: 'Mechanical Engineering',
+    marks: { math: 75, science: 82, english: 85 },
+    admissionYear: 2023
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e0'),
+    name: 'Alice Smith',
+    age: 21,
+    department: 'Computer Science',
+    marks: { maths: 85, science: 78, english: 92 },
+    admissionYear: 2022,
+    attendence: 95
+  },
+  {
+    _id: ObjectId('6815b687166c7f6d44d861e4'),
+    name: 'Ethan Davis',
+    age: 23,
+    department: 'Civil Engineering',
+    marks: { math: 80, science: 75, english: 70 },
+    admissionYear: 2020
+  }
+]
+
+
+4. Use $lookup to join students with a new collection named internships, and display: name, department, internship_company, and duration
+(Assume students.student_id = internships.student_id)
+
+
+collegeDB> db.internships.insertMany([
+...   { student_id: 1, internship_company: "TechCorp Solutions", duration: "3 months" },
+...   { student_id: 2, internship_company: "Innovate Systems", duration: "6 months" },
+...   { student_id: 3, internship_company: "Global Dynamics", duration: "4 months" },
+...   { student_id: 4, internship_company: "TechCorp Solutions", duration: "3 months" },
+...   { student_id: 5, internship_company: "Stellar Innovations", duration: "5 months" },
+...   { student_id: 6, internship_company: "Quantum Leap", duration: "6 months" }
+... ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6815bb0b166c7f6d44d861e6'),
+    '1': ObjectId('6815bb0b166c7f6d44d861e7'),
+    '2': ObjectId('6815bb0b166c7f6d44d861e8'),
+    '3': ObjectId('6815bb0b166c7f6d44d861e9'),
+    '4': ObjectId('6815bb0b166c7f6d44d861ea'),
+    '5': ObjectId('6815bb0b166c7f6d44d861eb')
+  }
+}
+collegeDB> db.students.updateMany(
+...   { name: "Alice Smith" },
+...   { $set: { student_id: 1 } }
+... );
+... db.students.updateMany(
+...   { name: "Bob Johnson" },
+...   { $set: { student_id: 2 } }
+... );
+... db.students.updateMany(
+...   { name: "Charlie Brown" },
+...   { $set: { student_id: 3 } }
+... );
+... db.students.updateMany(
+...   { name: "Diana Miller" },
+...   { $set: { student_id: 4 } }
+... );
+... db.students.updateMany(
+...   { name: "Ethan Davis" },
+...   { $set: { student_id: 5 } }
+... );
+... db.students.updateMany(
+...   { name: "Fatima Khan" },
+...   { $set: { student_id: 6 } }
+... );
+... db.students.aggregate([
+...   {
+...     $lookup: {
+...       from: "internships",
+...       localField: "student_id",
+...       foreignField: "student_id",
+...       as: "internship_info"
+...     }
+...   },
+...   {
+...     $project: {
+...       _id: 0,
+...       name: 1,
+...       department: 1,
+...       "internship_info.internship_company": 1,
+...       "internship_info.duration": 1
+...     }
+...   }
+... ]).toArray();
+... 
+[
+  {
+    name: 'Alice Smith',
+    department: 'Computer Science',
+    internship_info: [
+      {
+        internship_company: 'TechCorp Solutions',
+        duration: '3 months'
+      }
+    ]
+  },
+  {
+    name: 'Charlie Brown',
+    department: 'Mechanical Engineering',
+    internship_info: [ { internship_company: 'Global Dynamics', duration: '4 months' } ]
+  },
+  {
+    name: 'Diana Miller',
+    department: 'Computer Science',
+    internship_info: [
+      {
+        internship_company: 'TechCorp Solutions',
+        duration: '3 months'
+      }
+    ]
+  },
+  {
+    name: 'Ethan Davis',
+    department: 'Civil Engineering',
+    internship_info: [
+      {
+        internship_company: 'Stellar Innovations',
+        duration: '5 months'
+      }
+    ]
+  },
+  {
+    name: 'Fatima Khan',
+    department: 'Physics',
+    internship_info: [ { internship_company: 'Quantum Leap', duration: '6 months' } ]
+  }
+]
+
+
+
+
+
